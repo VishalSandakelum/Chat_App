@@ -1,4 +1,4 @@
-package lk.ijse.chat.controller;
+package lk.ijse.chat.Controller;
 
 import com.jfoenix.controls.JFXTextArea;
 import javafx.animation.TranslateTransition;
