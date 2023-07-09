@@ -17,10 +17,6 @@ public class Launcher extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         openWindow();
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/Client.fxml"))));
-        stage.setTitle("Client");
-        stage.centerOnScreen();
-        stage.show();
     }
 
     public void openWindow(){

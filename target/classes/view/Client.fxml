@@ -21,7 +21,7 @@
                   <Image url="@../img/catnew.png" />
                </image>
             </ImageView>
-            <Text layoutX="97.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client" wrappingWidth="126.13671875">
+            <Text fx:id="nametxt" layoutX="97.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client" wrappingWidth="126.13671875">
                <font>
                   <Font name="System Bold Italic" size="20.0" />
                </font>

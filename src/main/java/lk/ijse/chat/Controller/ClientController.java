@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -35,7 +36,6 @@ import java.util.ResourceBundle;
 public class ClientController implements Initializable {
     public TextField typetxt;
     public Button sendbtn;
-    public JFXTextArea textarea;
     public VBox messagContainer;
     public ScrollPane scrollPane;
     public Button emojibtn;
@@ -45,11 +45,11 @@ public class ClientController implements Initializable {
     static boolean openWindow = false;
 
     private static final double PANE_HEIGHT = 500;
+    public Text nametxt;
 
     Socket socket;
 
      DataInputStream dataInputStream;
-     BufferedReader reader;
      DataOutputStream dataOutputStream;
 
     public ClientController() throws IOException {
@@ -61,6 +61,7 @@ public class ClientController implements Initializable {
             try {
                     reply = typetxt.getText();
                     if(reply!=null) {
+                        System.out.println("flush");
                         LocalTime currentTime = LocalTime.now();
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
                         String time = currentTime.format(formatter);
@@ -87,24 +88,29 @@ public class ClientController implements Initializable {
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             openWindow = true;
+            nametxt.setText(ServerController.name);
         } catch (IOException e) {
 
             e.printStackTrace();
         }
 
-            String message;
+            String message ;
             while (true) {
                 try {
-                    message = dataInputStream.readUTF();
-                    if(message!= null) {
-                        System.out.println("Server: " + message);
-                        appendMessage("Server: " + message, "-fx-border-color: #CF76FF; -fx-background-color: #CF76FF; -fx-background-radius: 0px 20px 20px 20px; -fx-border-radius: 0px 20px 20px 20px;");
+                    if(socket==null) {
+                        socket = new Socket("localhost", 3001);
                     }
+                        message = dataInputStream.readUTF();
+                    System.out.println("message"+message);
+                        if (message != null) {
+                            System.out.println("pull");
+                            System.out.println("Server: " + message);
+                            appendMessage("Server: " + message, "-fx-border-color: #CF76FF; -fx-background-color: #CF76FF; -fx-background-radius: 0px 20px 20px 20px; -fx-border-radius: 0px 20px 20px 20px;");
+                        }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
         }).start();
 
         try {
@@ -120,7 +126,6 @@ public class ClientController implements Initializable {
         Platform.runLater(() -> {
             Label messageLabel = new Label(message);
             messageLabel.setWrapText(true);
-            //messageLabel.setPrefWidth(200);
             messageLabel.setPadding(new Insets(10));
             messageLabel.setStyle(style);
 
@@ -140,7 +145,6 @@ public class ClientController implements Initializable {
         Platform.runLater(() -> {
             Label messageLabel = new Label(message);
             messageLabel.setWrapText(true);
-            //messageLabel.setPrefWidth(200);
             messageLabel.setPadding(new Insets(10));
             messageLabel.setStyle(style);
 
@@ -302,6 +306,5 @@ public class ClientController implements Initializable {
             }
         });
     }
-
 
 }
